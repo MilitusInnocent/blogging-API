@@ -12,7 +12,7 @@ require("./passport")
 
 const app = express()
 
-const port = process.env.port || 3000
+const PORT = process.env.PORT || 3000
 
 // middleware
 app.use(express.json());
@@ -27,7 +27,7 @@ const start = async () => {
       // connectDB
       await connectDB(process.env.MONGO_URI);
       console.log('Connected to DB successfully')
-      app.listen(port, () => console.log(`Server is listening port ${port}...`));
+      app.listen(PORT, () => console.log(`Server is listening PORT ${PORT}...`));
     } catch (error) {
       console.log(error);
     }
