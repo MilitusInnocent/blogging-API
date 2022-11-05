@@ -19,7 +19,7 @@ app.use(express.json());
 
 
 // routes
-app.use('/posts', passport.authenticate('jwt', { session: false  }), postRouter)
+app.use('/posts', postRouter)
 app.use('/', router)
 
 const start = async () => {

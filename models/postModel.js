@@ -3,13 +3,14 @@ const { Schema } = mongoose;
 //const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
+const postState = {draft: "draft", published: "published"}
 
 const PostSchema = new Schema({
   id: ObjectId,
   created_at: Date,
   title: { type: String, required: true, index: {unique: true, dropDups: true} },
   description: String,
-  state: {type: String, Default: 'draft'},
+  state: { type: String, required: true, enum: Object.values(postState), default: 'draft'},
   read_count: { type: Number, default: 0 },
   reading_time: {type: String},
   tags: [String],
@@ -22,6 +23,6 @@ const PostSchema = new Schema({
 
 });
 
-const Post = mongoose.model('Post', PostSchema);
+const PostModel = mongoose.model('Post', PostSchema);
 
-module.exports = Post;
+module.exports = { PostModel, postState};
