@@ -1,10 +1,10 @@
 const request = require('supertest')
-const app = require('../index');
+const app = require('../app');
 
 
 describe('Home Route', () => {
     it('Should return status true', async () => {
-        const response = await request(app).get('/').set('content-type', 'application/json')
+        const response = await request(app).get('/posts').set('content-type', 'application/json')
         expect(response.status).toBe(200)
         expect(response.body).toEqual({ status: true })
     })

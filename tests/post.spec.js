@@ -1,75 +1,69 @@
 const request = require('supertest')
 const { connect } = require('./database')
-const app = require('../index');
+const app = require('../app');
 const moment = require('moment');
-const OrderModel = require('../models/orderModel');
+const PostModel = require('../models/postModel');
 const UserModel = require('../models/userModel')
 
 
-describe('Order Route', () => {
+describe('Post Route', () => {
     let conn;
     let token;
 
     beforeAll(async () => {
         conn = await connect()
 
-        await UserModel.create({ username: 'tobi', password: '123456'});
+        await UserModel.findOne({ email: 'tobis@gmail.com', password: '123456'});
 
         const loginResponse = await request(app)
         .post('/login')
         .set('content-type', 'application/json')
         .send({ 
-            username: 'tobi', 
+            email: 'tobis@gmail.com', 
             password: '123456'
         });
 
         token = loginResponse.body.token;
     })
 
-    afterEach(async () => {
-        await conn.cleanup()
-    })
+    // afterEach(async () => {
+    //     await conn.cleanup()
+    // })
 
-    afterAll(async () => {
-        await conn.disconnect()
-    })
+    // afterAll(async () => {
+    //     await conn.disconnect()
+    // })
 
-    it('should return orders', async () => {
+    it('should return Posts', async () => {
         // create order in our db
-        await OrderModel.create({
-            state: 1,
-            total_price: 900,
-            created_at: moment().toDate(),
-            items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
-        })
-
-        await OrderModel.create({
-            state: 1,
-            total_price: 900,
-            created_at: moment().toDate(),
-            items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
+            await PostModel.create({
+            title: "dan d humorous",
+            description: "Daniel is here",
+            state: "published",
+            tags: "hassle",
+            body: "leave this empty"
         })
 
         const response = await request(app)
-        .get('/orders')
+        .get('/posts')
         .set('content-type', 'application/json')
         .set('Authorization', `Bearer ${token}`)
 
         expect(response.status).toBe(200)
-        expect(response.body).toHaveProperty('orders')
+        expect(response.body).toHaveProperty('Posts')
         expect(response.body).toHaveProperty('status', true)
     })
 
-    it('should return orders with state 2', async () => {
-        // create order in our db
-        await OrderModel.create({
+    it('should return Posts with state 2', async () => {
+        // create Post in our db
+        await PostModel.create({
             state: 1,
             total_price: 900,
             created_at: moment().toDate(),
             items: [{ name: 'chicken pizza', price: 900, size: 'm', quantity: 1}]
         })
 
-        await OrderModel.create({
+        await PostModel.create({
             state: 2,
             total_price: 900,
             created_at: moment().toDate(),
@@ -77,13 +71,13 @@ describe('Order Route', () => {
         })
 
         const response = await request(app)
-        .get('/orders?state=2')
+        .get('/posts?state=2')
         .set('content-type', 'application/json')
         .set('Authorization', `Bearer ${token}`)
 
         expect(response.status).toBe(200)
-        expect(response.body).toHaveProperty('orders')
+        expect(response.body).toHaveProperty('Posts')
         expect(response.body).toHaveProperty('status', true)
-        expect(response.body.orders.every(order => order.state === 2)).toBe(true)
+        expect(response.body.Posts.every(Post => Post.state === 2)).toBe(true)
     })
 });
