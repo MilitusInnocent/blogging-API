@@ -19,7 +19,7 @@ exports.createPost = async (req, res) => {
         })
         return res.status(201).json({ status: true, post })
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send({status: false, error: "Make sure password is at least 8 chars long and email not used before"})
     }
    
 }

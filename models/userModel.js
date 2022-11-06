@@ -10,7 +10,7 @@ const UserModel = new Schema({
   firstname: { type: String, required: true },
   lastname: { type: String, required: true },
   email: { type: String, unique: true }, // `email` must be unique 
-  password: { type: String, required: true, minlength: [6, 'Password must be at least 8 chars long']},
+  password: { type: String, required: true, minlength: [8, 'Password must be at least 8 chars long']},
   Posts: {
     type: Schema.Types.ObjectId, ref: 'Post',
   }  

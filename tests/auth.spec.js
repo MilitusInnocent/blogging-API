@@ -4,12 +4,6 @@ const UserModel = require('../models/userModel')
 const app = require('../app');
 
 describe('Auth: Signup', () => {
-    // let conn;
-
-    // beforeAll(async () => {
-    //     conn = await connect()
-    // })
-
     // afterEach(async () => {
     //     await conn.cleanup()
     // })
@@ -39,7 +33,7 @@ describe('Auth: Signup', () => {
 
     it('should login a user', async () => {
         // create user in out db
-        const user = await UserModel.findOne({ email: 'tobis@mail.com', password: '123456'});
+        const user = await UserModel.find({ email: 'tobis@mail.com', password: '123456'});
 
         // login user
         const response = await request(app)
