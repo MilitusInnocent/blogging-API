@@ -6,23 +6,18 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 exports.signup = async (req, res) => {
-
-    const user = await UserModel.findOne({email: req.user.email})
-
-    // user.firstname = req.user.firstName
-    // user.lastname = req.user.lastName
-    // user.email = req.user.email
-
-    await user.save()
-
-    delete user.password
-
-
-    console.log(req.user)
-    res.status(201).json({
-        message: 'Signup successful',
-        user: user
-    });
+    try {
+        const user = await UserModel.findOne({email: req.user.email})
+        res.status(201).json({
+            message: 'Signup successful',
+            user: user
+        });
+        console.log(error.Error)
+        
+    } catch (error) {
+        return res.status(400).json({error});
+      } 
+       
 }
 
 // exports.login = (req, res, { err, user, info}) => {

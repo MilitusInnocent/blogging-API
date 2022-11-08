@@ -18,9 +18,18 @@ exports.createPost = async (req, res) => {
             reading_time
         })
         return res.status(201).json({ status: true, post })
+        console.log(error.errors)
     } catch (error) {
-        res.status(500).send({status: false, error: "Make sure password is at least 8 chars long and email not used before"})
-    }
+        if (error.name === "ValidationError") {
+          let errors = {};
+    
+          Object.keys(error.errors).forEach((key) => {
+            errors[key] = error.errors[key].message;
+          });
+    
+          return res.status(400).send(errors);
+        } res.status(500).json({message: "Something went wrong", error})
+     } 
    
 }
 
